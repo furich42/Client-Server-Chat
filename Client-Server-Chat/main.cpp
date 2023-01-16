@@ -8,6 +8,8 @@ using namespace std;
 int main()
 {
 
+    QTcpServer Server();
+
 
     cout << "Hello World" << endl;
 
