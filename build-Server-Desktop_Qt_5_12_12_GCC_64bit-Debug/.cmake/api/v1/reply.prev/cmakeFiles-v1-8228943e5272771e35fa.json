@@ -1,0 +1,178 @@
+{
+	"inputs" : 
+	[
+		{
+			"path" : "CMakeLists.txt"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/Tools/QtCreator/share/qtcreator/package-manager/auto-setup.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "/home/furich/QTProjects/Client-Server-Chat/build-Server-Desktop_Qt_5_12_12_GCC_64bit-Debug/CMakeFiles/3.25.1/CMakeSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeSystemSpecificInitialize.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "/home/furich/QTProjects/Client-Server-Chat/build-Server-Desktop_Qt_5_12_12_GCC_64bit-Debug/CMakeFiles/3.25.1/CMakeCXXCompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeSystemSpecificInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeGenericSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeInitializeConfigs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/Platform/Linux.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/Platform/UnixPaths.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeCXXInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/Compiler/GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/Platform/Linux-GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/Platform/Linux-GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5ConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5Config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5ConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5Config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5ModuleLocation.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Core/Qt5CoreConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Core/Qt5CoreConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Core/Qt5CoreMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/cmake/1210/share/cmake-3.25/Modules/CMakeParseArguments.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5ConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5Config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/Qt5ModuleLocation.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Network/Qt5NetworkConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Network/Qt5NetworkConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Network/Qt5Network_QConnmanEnginePlugin.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Network/Qt5Network_QGenericEnginePlugin.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/furich/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5Network/Qt5Network_QNetworkManagerEnginePlugin.cmake"
+		}
+	],
+	"kind" : "cmakeFiles",
+	"paths" : 
+	{
+		"build" : "/home/furich/QTProjects/Client-Server-Chat/build-Server-Desktop_Qt_5_12_12_GCC_64bit-Debug",
+		"source" : "/home/furich/QTProjects/Client-Server-Chat/Server"
+	},
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}
