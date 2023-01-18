@@ -21,8 +21,8 @@ private:
     void sendToClient();
 
 public slots:
-    //void incomingConnection(qintptr socketDescriptor);
-    //void slotReadyRead();
+    void incomingConnection(qintptr socketDescriptor);
+    void slotReadyRead();
 
 };
 
