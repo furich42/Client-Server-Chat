@@ -13,6 +13,7 @@ class Server : public QTcpServer
 
 public:
     Server();
+    ~Server();
     QTcpSocket *socket;
 
 private:

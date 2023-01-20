@@ -8,6 +8,10 @@ Server::Server() {
     }
 }
 
+Server::~Server() {
+   qDebug() << "server stoped";
+}
+
 
 void Server::incomingConnection(qintptr socketDescriptor) {
     socket = new QTcpSocket;
