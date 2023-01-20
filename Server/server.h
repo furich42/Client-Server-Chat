@@ -19,7 +19,7 @@ public:
 private:
     QVector<QTcpSocket*> sockets;
     QByteArray data;
-    void sendToClient();
+    void sendToClient(QString str);
 
 public slots:
     void incomingConnection(qintptr socketDescriptor);

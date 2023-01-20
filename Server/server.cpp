@@ -37,3 +37,12 @@ void Server::slotReadyRead() {
         qDebug() << "Data stream error";
     }
 }
+
+
+void Server::sendToClient(QString str) {
+    data.clear();
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_1);
+    out << str;
+    socket->write(data);
+}
