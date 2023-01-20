@@ -46,3 +46,4 @@ void Server::sendToClient(QString str) {
     out << str;
     socket->write(data);
 }
+

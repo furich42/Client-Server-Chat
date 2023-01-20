@@ -3,11 +3,8 @@
 
 int main(int argc, char *argv[])
 {
+
+    QCoreApplication a(argc, argv);
     Server server;
-
-
-
-//    QCoreApplication a(argc, argv);
-
-//    return a.exec();
+    return a.exec();
 }
