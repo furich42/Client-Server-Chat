@@ -5,7 +5,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QVector>
-
+#include <QDataStream>
 
 class Server : public QTcpServer
 {

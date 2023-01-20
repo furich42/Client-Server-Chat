@@ -19,3 +19,17 @@ void Server::incomingConnection(qintptr socketDescriptor) {
     qDebug() << "client connected" << socketDescriptor;
 }
 
+
+void Server::slotReadyRead() {
+    socket = (QTcpSocket*)sender();
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_5_1);
+    if(in.status() == QDataStream::Ok) {
+        qDebug() << "read...";
+        QString str;
+        in >> str;
+        qDebug() << str;
+    } else {
+        qDebug() << "Data stream error";
+    }
+}
