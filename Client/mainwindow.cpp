@@ -20,6 +20,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_ConnectButton_clicked()
 {
     socket->connectToHost("127.0.0.1", 2323);
+
+
 }
 
 void MainWindow::sendToServer(QString str)
