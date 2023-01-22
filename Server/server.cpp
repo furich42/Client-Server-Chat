@@ -44,6 +44,9 @@ void Server::sendToClient(QString str) {
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_1);
     out << str;
-    socket->write(data);
+//    socket->write(data);
+    for(int i = 0; i < sockets.size(); i++) {
+        sockets[i]->write(data);
+    }
 }
 
