@@ -21,11 +21,16 @@ private slots:
     void on_ConnectButton_clicked();
 
 
+    void on_SendButton_clicked();
+
+    void on_InputLine_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 
     QTcpSocket *socket;
     QByteArray data;
+    void sendToServer(QString str);
 
 public slots:
     void slotReadyRead();

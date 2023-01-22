@@ -44,3 +44,15 @@ void MainWindow::slotReadyRead()
     }
 }
 
+
+void MainWindow::on_SendButton_clicked()
+{
+    sendToServer(ui->InputLine->text());
+}
+
+
+void MainWindow::on_InputLine_returnPressed()
+{
+    sendToServer(ui->InputLine->text());
+}
+

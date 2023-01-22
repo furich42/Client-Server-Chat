@@ -33,6 +33,7 @@ void Server::slotReadyRead() {
         QString str;
         in >> str;
         qDebug() << str;
+        sendToClient(str);
     } else {
         qDebug() << "Data stream error";
     }
