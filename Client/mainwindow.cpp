@@ -29,6 +29,7 @@ void MainWindow::sendToServer(QString str)
     out.setVersion(QDataStream::Qt_5_1);
     out << str;
     socket->write(data);
+    ui->InputLine->clear();
 }
 
 void MainWindow::slotReadyRead()
