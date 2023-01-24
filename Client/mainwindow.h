@@ -32,6 +32,8 @@ private:
     QByteArray data;
     void sendToServer(QString str);
 
+    quint16 nextBlockSize;
+
 public slots:
     void slotReadyRead();
 

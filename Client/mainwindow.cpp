@@ -29,7 +29,9 @@ void MainWindow::sendToServer(QString str)
     data.clear();
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_1);
-    out << str;
+    out << quint16(0) << str;
+    out.device()->seek(0);
+    out << quint16(data.size() - sizeof(quint16));
     socket->write(data);
     ui->InputLine->clear();
 }
@@ -39,9 +41,25 @@ void MainWindow::slotReadyRead()
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_5_1);
     if(in.status() == QDataStream::Ok) {
-        QString str;
-        in >> str;
-        ui->OutputBrowser->append(str);
+//        QString str;
+//        in >> str;
+//        ui->OutputBrowser->append(str);
+        while(true) {
+            if(nextBlockSize == 0) {
+                if(socket->bytesAvailable() < 2) {
+                    break;
+                }
+                in >> nextBlockSize;
+            }
+            if(socket->bytesAvailable() < nextBlockSize) {
+                break;
+            }
+            QString str;
+            in >> str;
+            nextBlockSize = 0;
+            ui->OutputBrowser->append(str);
+        }
+
     } else {
         ui->OutputBrowser->append("read error");
     }
