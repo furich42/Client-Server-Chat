@@ -30,10 +30,33 @@ void Server::slotReadyRead() {
     in.setVersion(QDataStream::Qt_5_1);
     if(in.status() == QDataStream::Ok) {
         qDebug() << "read...";
-        QString str;
-        in >> str;
-        qDebug() << str;
-        sendToClient(str);
+//        QString str;
+//        in >> str;
+//        qDebug() << str;
+//        sendToClient(str);
+
+        while(true) {
+            if(nextBlockSize == 0) {
+                qDebug() << "nextBlockSize = 0";
+                if(socket->bytesAvailable() < 2) {
+                    qDebug() << "data < 2, break!";
+                    break;
+                }
+                in >> nextBlockSize;
+                qDebug() << "nextBlockSize = " << nextBlockSize;
+            }
+            if(socket->bytesAvailable() < nextBlockSize) {
+                qDebug() << "data not full, break";
+                break;
+            }
+            QString str;
+            in >> str;
+            nextBlockSize = 0;
+            qDebug() << "sending: " << str;
+            sendToClient(str);
+            break;
+        }
+
     } else {
         qDebug() << "Data stream error";
     }
@@ -44,7 +67,9 @@ void Server::sendToClient(QString str) {
     data.clear();
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_1);
-    out << str;
+    out << qint16(0) << str;
+    out.device()->seek(0);
+    out << qint16(data.size() - sizeof(qint16));
 //    socket->write(data);
     for(int i = 0; i < sockets.size(); i++) {
         sockets[i]->write(data);
