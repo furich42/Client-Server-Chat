@@ -6,6 +6,7 @@ Server::Server() {
     } else {
         qDebug() << "error";
     }
+    nextBlockSize = 0;
 }
 
 Server::~Server() {
@@ -18,8 +19,12 @@ void Server::incomingConnection(qintptr socketDescriptor) {
     socket->setSocketDescriptor(socketDescriptor);
     connect(socket, &QTcpSocket::readyRead, this, &Server::slotReadyRead);
     connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
-
     sockets.push_back(socket);
+
+    qDebug() << "client's socketDescriptor" << socketDescriptor;
+
+    sockets_to_names[socket->socketDescriptor()] = "";
+
     qDebug() << "client connected" << socketDescriptor;
 }
 
@@ -53,6 +58,11 @@ void Server::slotReadyRead() {
             in >> str;
             nextBlockSize = 0;
             qDebug() << "sending: " << str;
+            if(sockets_to_names.count(socket->socketDescriptor()) && sockets_to_names[socket->socketDescriptor()] == "") {
+                sockets_to_names[socket->socketDescriptor()] = str;
+                qDebug() << "user " << socket->socketDescriptor() << " now named as " << str;
+                break;
+            }
             sendToClient(str);
             break;
         }

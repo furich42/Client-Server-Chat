@@ -6,6 +6,7 @@
 #include <QTcpSocket>
 #include <QVector>
 #include <QDataStream>
+#include <QMap>
 
 class Server : public QTcpServer
 {
@@ -18,6 +19,7 @@ public:
 
 private:
     QVector<QTcpSocket*> sockets;
+    QMap<qintptr, QString> sockets_to_names;
     QByteArray data;
     void sendToClient(QString str);
     qint16 nextBlockSize;
