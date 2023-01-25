@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     socket  = new QTcpSocket(this);
     connect(socket, &QTcpSocket::readyRead, this, &MainWindow::slotReadyRead);
     connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
+    nextBlockSize = 0;
+
 }
 
 MainWindow::~MainWindow()
@@ -19,16 +21,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_ConnectButton_clicked()
 {
-    socket->connectToHost("127.0.0.1", 2323);
+    QString ip = ui->IpLine->text();
+    socket->connectToHost(ip, 2323);
 
+
+    QString str = ui->NameLine->text();
+
+    qDebug() << "readed name: " << str;
+
+    sleep(5);
+
+    sendToServer(str);
 
 }
 
 void MainWindow::sendToServer(QString str)
 {
+
     data.clear();
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_1);
+    qDebug() << "sending: " << str;
     out << quint16(0) << str;
     out.device()->seek(0);
     out << quint16(data.size() - sizeof(quint16));
