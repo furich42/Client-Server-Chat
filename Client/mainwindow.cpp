@@ -29,8 +29,6 @@ void MainWindow::on_ConnectButton_clicked()
 
     qDebug() << "readed name: " << str;
 
-    sleep(5);
-
     sendToServer(str);
 
 }
