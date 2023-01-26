@@ -6,6 +6,9 @@
 #include <QTcpSocket>
 #include <QTime>
 
+#include <unistd.h>
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -35,6 +38,8 @@ private:
     void sendToServer(QString str);
 
     quint16 nextBlockSize;
+
+    bool fcon = true;
 
 public slots:
     void slotReadyRead();
