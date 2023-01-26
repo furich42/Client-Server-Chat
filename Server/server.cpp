@@ -60,11 +60,16 @@ void Server::slotReadyRead() {
             nextBlockSize = 0;
             qDebug() << "sending: " << str;
             if(sockets_to_names.count(socket->socketDescriptor()) && sockets_to_names[socket->socketDescriptor()] == "") {
-                sockets_to_names[socket->socketDescriptor()] = str;
-                qDebug() << "user " << socket->socketDescriptor() << " now named as " << str;
+
+                QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+                QJsonObject json = doc.object();
+                QString mes = json["user"].toString();
+
+                sockets_to_names[socket->socketDescriptor()] = mes;
+                qDebug() << "user " << socket->socketDescriptor() << " now named as " << mes;
                 break;
             }
-            str = sockets_to_names[socket->socketDescriptor()] + ": " + str;
+            str = str;
             sendToClient(str);
             break;
         }

@@ -7,6 +7,11 @@
 #include <QVector>
 #include <QDataStream>
 #include <QMap>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
+
 
 class Server : public QTcpServer
 {
