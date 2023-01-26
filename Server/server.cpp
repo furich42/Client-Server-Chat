@@ -58,18 +58,31 @@ void Server::slotReadyRead() {
             QString str;
             in >> str;
             nextBlockSize = 0;
-            qDebug() << "sending: " << str;
-            if(sockets_to_names.count(socket->socketDescriptor()) && sockets_to_names[socket->socketDescriptor()] == "") {
 
-                QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
-                QJsonObject json = doc.object();
-                QString mes = json["user"].toString();
+//            if(sockets_to_names.count(socket->socketDescriptor()) && sockets_to_names[socket->socketDescriptor()] == "") {
 
-                sockets_to_names[socket->socketDescriptor()] = mes;
-                qDebug() << "user " << socket->socketDescriptor() << " now named as " << mes;
+//                QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+//                QJsonObject json = doc.object();
+//                QString mes = json["user"].toString();
+
+
+//                sockets_to_names[socket->socketDescriptor()] = mes;
+//                qDebug() << "user " << socket->socketDescriptor() << " now named as " << mes;
+//                break;
+//            }
+
+
+            QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+            QJsonObject json = doc.object();
+
+            if(json["type"] == MessageType::diagnostic) {
+                qDebug() << "mt::diagnostic";
+                sockets_to_names[socket->socketDescriptor()] = json["user"].toString();
+                qDebug() << "user " << socket->socketDescriptor() << " now named as " << sockets_to_names[socket->socketDescriptor()];
                 break;
             }
-            str = str;
+
+
             sendToClient(str);
             break;
         }

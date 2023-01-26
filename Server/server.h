@@ -23,6 +23,13 @@ public:
     QTcpSocket *socket;
 
 private:
+
+    enum MessageType {
+        message,
+        file,
+        diagnostic
+    };
+
     QVector<QTcpSocket*> sockets;
     QMap<qintptr, QString> sockets_to_names;
     QByteArray data;
