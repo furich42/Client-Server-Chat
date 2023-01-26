@@ -32,7 +32,6 @@ void MainWindow::on_ConnectButton_clicked()
 
     sendToServer(str, MessageType::diagnostic);
 
-    qDebug() << "error, can't connect to server\nTry again";
 
 
 
