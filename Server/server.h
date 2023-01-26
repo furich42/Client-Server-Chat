@@ -5,6 +5,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QVector>
+#include <QSet>
 #include <QDataStream>
 #include <QMap>
 #include <QJsonObject>
@@ -30,7 +31,7 @@ private:
         diagnostic
     };
 
-    QVector<QTcpSocket*> sockets;
+    QSet<QTcpSocket*> sockets;
     QMap<qintptr, QString> sockets_to_names;
     QByteArray data;
     void sendToClient(QString str);
