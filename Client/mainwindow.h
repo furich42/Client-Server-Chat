@@ -5,6 +5,11 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QTime>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
+
 
 #include <unistd.h>
 

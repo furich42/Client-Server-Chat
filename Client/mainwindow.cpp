@@ -60,13 +60,27 @@ void MainWindow::on_ConnectButton_clicked()
 
 void MainWindow::sendToServer(QString str)
 {
+
+    QJsonObject json;
+
+
+    json["type"] = "message";
+    json["receavers"] = "all";
+    json["user"] = ui->NameLine->text();
+
     qDebug() <<"socket state is " <<  socket->state();
         if(socket->state() == QAbstractSocket::ConnectedState || (fcon ? socket->state() == QAbstractSocket::ConnectingState : false)) {
             data.clear();
             QDataStream out(&data, QIODevice::WriteOnly);
             out.setVersion(QDataStream::Qt_5_1);
+            json["message"] = str;
             qDebug() << "sending: " << str;
-            out << quint16(0) << str;
+
+            QString sen = QJsonDocument(json).toJson() ;
+
+
+
+            out << quint16(0) << sen;
             out.device()->seek(0);
             out << quint16(data.size() - sizeof(quint16));
             socket->write(data);
@@ -98,7 +112,17 @@ void MainWindow::slotReadyRead()
             QString str;
             in >> str;
             nextBlockSize = 0;
-            ui->OutputBrowser->append(QTime::currentTime().toString() + " " + str);
+
+            qDebug() << "incoming message: " << str;
+
+            QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+            QJsonObject json = doc.object();
+
+            QString mes = json["message"].toString();
+            qDebug() << "incoming mes: " << mes;
+
+
+            ui->OutputBrowser->append(QTime::currentTime().toString() + " | " + json["user"].toString() + ": " + mes );
         }
 
     } else {
