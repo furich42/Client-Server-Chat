@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QTime>
 
 
 QT_BEGIN_NAMESPACE

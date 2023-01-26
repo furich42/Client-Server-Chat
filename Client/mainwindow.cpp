@@ -68,7 +68,7 @@ void MainWindow::slotReadyRead()
             QString str;
             in >> str;
             nextBlockSize = 0;
-            ui->OutputBrowser->append(str);
+            ui->OutputBrowser->append(QTime::currentTime().toString() + " " + str);
         }
 
     } else {
