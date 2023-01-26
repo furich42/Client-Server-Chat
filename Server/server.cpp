@@ -54,6 +54,7 @@ void Server::slotReadyRead() {
                 qDebug() << "data not full, break";
                 break;
             }
+
             QString str;
             in >> str;
             nextBlockSize = 0;
@@ -63,6 +64,7 @@ void Server::slotReadyRead() {
                 qDebug() << "user " << socket->socketDescriptor() << " now named as " << str;
                 break;
             }
+            str = sockets_to_names[socket->socketDescriptor()] + ": " + str;
             sendToClient(str);
             break;
         }
