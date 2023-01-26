@@ -25,69 +25,47 @@ void MainWindow::on_ConnectButton_clicked()
     QString ip = ui->IpLine->text();
     socket->connectToHost(ip, 2323);
 
-//    int i = 0;
-//    while(socket->state() == QAbstractSocket::ConnectingState) {
-//        qDebug() << socket->state();
-//        if(socket->state() == QAbstractSocket::ConnectedState) {
-//            break;
-//        }
-//        sleep(1);
-//        i++;
-//        if(i >= 30) {
-//            break;
-//        }
-//    }
+    ui->ConnectButton->setDisabled(1);
+    ui->SendButton->setDisabled(0);
+    QString str = ui->NameLine->text();
+    qDebug() << "readed name: " << str;
 
+    sendToServer(str, MessageType::diagnostic);
 
-
-    if(socket->state() == QAbstractSocket::ConnectedState || (fcon ? socket->state() == QAbstractSocket::ConnectingState : false)) {
-
-        ui->ConnectButton->setDisabled(1);
-        ui->SendButton->setDisabled(0);
-        QString str = ui->NameLine->text();
-        qDebug() << "readed name: " << str;
-
-        sendToServer(str);
-
-    } else {
-        fcon = true;
-        qDebug() << "error, can't connect to server\nTry again";
-    }
+    qDebug() << "error, can't connect to server\nTry again";
 
 
 
 }
 
-void MainWindow::sendToServer(QString str)
+void MainWindow::sendToServer(const QString& str, MessageType m_type)
 {
 
-    QJsonObject json;
+//    QJsonObject json;
 
 
-    json["type"] = "message";
-    json["receavers"] = "all";
-    json["user"] = ui->NameLine->text();
+//    json["type"] = "message";
+//    json["receavers"] = "all";
+//    json["user"] = ui->NameLine->text();
 
     qDebug() <<"socket state is " <<  socket->state();
-        if(socket->state() == QAbstractSocket::ConnectedState || (fcon ? socket->state() == QAbstractSocket::ConnectingState : false)) {
             data.clear();
             QDataStream out(&data, QIODevice::WriteOnly);
             out.setVersion(QDataStream::Qt_5_1);
-            json["message"] = str;
-            qDebug() << "sending: " << str;
-
-            QString sen = QJsonDocument(json).toJson() ;
+            //json["message"] = str;
 
 
+            QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson() ;
 
             out << quint16(0) << sen;
             out.device()->seek(0);
             out << quint16(data.size() - sizeof(quint16));
             socket->write(data);
             ui->InputLine->clear();
-            fcon = false;
 
-        }
+            qDebug() << "sended: " << sen;
+
+
 
 }
 
@@ -133,13 +111,27 @@ void MainWindow::slotReadyRead()
 
 void MainWindow::on_SendButton_clicked()
 {
-    sendToServer(ui->InputLine->text());
+    sendToServer(ui->InputLine->text(), MessageType::message);
 }
 
 
 void MainWindow::on_InputLine_returnPressed()
 {
 
-    sendToServer(ui->InputLine->text());
+    sendToServer(ui->InputLine->text(), MessageType::message);
+}
+
+
+QJsonObject MainWindow::formJson(MessageType m_type, const QString &message, const QString &receaver, const QString &user) {
+
+    QJsonObject json;
+
+    json["message"] = message;
+    json["user"] = user;
+    json["type"] = m_type;
+    json["receavers"] = receaver;
+
+    return json;
+
 }
 

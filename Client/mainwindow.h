@@ -35,16 +35,25 @@ private slots:
     void on_InputLine_returnPressed();
 
 private:
+
+    enum MessageType {
+        message,
+        file,
+        diagnostic
+    };
+
     Ui::MainWindow *ui;
 
     QTcpSocket *socket;
 
     QByteArray data;
-    void sendToServer(QString str);
+    void sendToServer(const QString& str, MessageType m_type);
 
     quint16 nextBlockSize;
 
     bool fcon = true;
+
+    QJsonObject formJson(MessageType m_type, const QString& message, const QString& receaver, const QString& user);
 
 public slots:
     void slotReadyRead();
