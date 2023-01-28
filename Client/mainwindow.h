@@ -34,13 +34,21 @@ private slots:
 
     void on_InputLine_returnPressed();
 
+    void closeEvent(QCloseEvent *);
+
+
+
 private:
 
     enum MessageType {
         message,
         file,
-        diagnostic
+        diagnostic,
+        connection,
+        disconnection
     };
+
+    QString user_name = "";
 
     Ui::MainWindow *ui;
 
@@ -48,7 +56,7 @@ private:
 
     QByteArray data;
 
-    void sendToServer(const QString& str, MessageType m_type);
+    void sendToServer(const QString& str);
 
     quint16 nextBlockSize;
 

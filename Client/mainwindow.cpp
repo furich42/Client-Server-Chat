@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+
     delete ui;
 }
 
@@ -25,34 +26,35 @@ void MainWindow::on_ConnectButton_clicked()
     QString ip = ui->IpLine->text();
     socket->connectToHost(ip, 2323);
 
+    user_name = ui->NameLine->text();
+
     //ui->ConnectButton->setDisabled(1);
     ui->SendButton->setDisabled(0);
-    QString str = ui->NameLine->text();
-    qDebug() << "readed name: " << str;
+    qDebug() << "readed name: " << user_name;
 
-    sendToServer(str, MessageType::diagnostic);
+    sendToServer(QJsonDocument(formJson(MessageType::connection, "", "all", ui->NameLine->text())).toJson());
 
 
 
 
 }
 
-void MainWindow::sendToServer(const QString& str, MessageType m_type)
+void MainWindow::sendToServer(const QString& str)
 {
 
     qDebug() <<"socket state is " <<  socket->state();
     data.clear();
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_1);
-    QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson();
+    //QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson();
 
-    out << quint16(0) << sen;
+    out << quint16(0) << str;
     out.device()->seek(0);
     out << quint16(data.size() - sizeof(quint16));
     socket->write(data);
-    ui->InputLine->clear();
 
-    qDebug() << "sended: " << sen;
+
+    qDebug() << "sended: " << str;
 
 
 
@@ -85,15 +87,27 @@ void MainWindow::slotReadyRead()
 
             if(json["type"] == MessageType::message) {
                 QString mes = json["text"].toString();
-                qDebug() << "incoming mes: " << mes;
+                qDebug() << "incoming message: " << mes;
                 ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + json["user"].toString() + ": " + mes );
             }
 
-            if(json["type"] == MessageType::diagnostic) {
+            if(json["type"] == MessageType::connection) {
                 QString mes = json["user"].toString();
-                qDebug() << "incoming mes: " << mes;
+                qDebug() << "connection: " << mes;
                 ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + mes + " has connected" );
             }
+
+            if(json["type"] == MessageType::disconnection) {
+                QString mes = json["user"].toString();
+                qDebug() << "disconnection: " << mes;
+                ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + mes + " has disconnected" );
+            }
+
+            if(json["type"] == MessageType::diagnostic) {
+                qDebug() << "DIAGNOSTIC";
+            }
+
+
 
 
         }
@@ -106,13 +120,15 @@ void MainWindow::slotReadyRead()
 
 void MainWindow::on_SendButton_clicked()
 {
-    sendToServer(ui->InputLine->text(), MessageType::message);
+    sendToServer(QJsonDocument(formJson(MessageType::message, ui->InputLine->text(), "all", ui->NameLine->text())).toJson());
+    ui->InputLine->clear();
 }
 
 
 void MainWindow::on_InputLine_returnPressed()
 {
-    sendToServer(ui->InputLine->text(), MessageType::message);
+    sendToServer(QJsonDocument(formJson(MessageType::message, ui->InputLine->text(), "all", ui->NameLine->text())).toJson());
+    ui->InputLine->clear();
 }
 
 
@@ -126,6 +142,13 @@ QJsonObject MainWindow::formJson(MessageType m_type, const QString &message, con
     json["receavers"] = receaver;
 
     return json;
+
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    sendToServer(QJsonDocument(formJson(MessageType::disconnection,"" , "all", user_name)).toJson());
 
 }
 
