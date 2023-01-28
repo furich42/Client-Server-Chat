@@ -23,7 +23,7 @@ void Server::incomingConnection(qintptr socketDescriptor) {
 
     qDebug() << "client's socketDescriptor" << socketDescriptor;
 
-    sockets_to_names[socket->socketDescriptor()] = "";
+
 
     qDebug() << "client connected" << socketDescriptor;
 }
@@ -60,7 +60,17 @@ void Server::slotReadyRead() {
 
             if(json["type"] == MessageType::diagnostic) {
                 qDebug() << "mt::diagnostic";
-                sockets_to_names[socket->socketDescriptor()] = json["user"].toString();
+
+                if(!sockets_to_names.contains(socket->socketDescriptor()) ) {
+                    sockets_to_names[socket->socketDescriptor()] = json["user"].toString();
+                    qDebug() << "send name to clients";
+                    sendToClient(str);
+                } else {
+                    sockets_to_names[socket->socketDescriptor()] = json["user"].toString();
+                    qDebug() << "dont send name to clients";
+                }
+
+
                 qDebug() << "stn.size() = " << sockets_to_names.size();
                 qDebug() << "user " << socket->socketDescriptor() << " now named as " << sockets_to_names[socket->socketDescriptor()];
                 break;
@@ -87,6 +97,7 @@ void Server::sendToClient(QString str) {
 
     for(QTcpSocket* s : sockets) {
         qDebug() << "message sended to client";
+
         qDebug() << s;
         s->write(data);
     }
