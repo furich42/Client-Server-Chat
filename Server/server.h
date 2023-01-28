@@ -28,7 +28,9 @@ private:
     enum MessageType {
         message,
         file,
-        diagnostic
+        diagnostic,
+        connection,
+        disconnection
     };
 
     QSet<QTcpSocket*> sockets;

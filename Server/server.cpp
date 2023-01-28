@@ -58,7 +58,7 @@ void Server::slotReadyRead() {
             QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
             QJsonObject json = doc.object();
 
-            if(json["type"] == MessageType::diagnostic) {
+            if(json["type"] == MessageType::connection) {
                 qDebug() << "mt::diagnostic";
 
                 if(!sockets_to_names.contains(socket->socketDescriptor()) ) {
@@ -74,6 +74,18 @@ void Server::slotReadyRead() {
                 qDebug() << "stn.size() = " << sockets_to_names.size();
                 qDebug() << "user " << socket->socketDescriptor() << " now named as " << sockets_to_names[socket->socketDescriptor()];
                 break;
+            }
+
+            if(json["type"] == MessageType::disconnection) {
+                qDebug() << "disconnection message";
+                qDebug() << "socket " << *sockets.find(socket) << " wll be removed";
+                qDebug() << sockets.size() << " - sockets.size() ";
+                sockets.erase(sockets.find(socket));
+                qDebug() << sockets.size() << " - now sockets.size() ";
+                sockets_to_names.remove(socket->socketDescriptor());
+                sendToClient(str);
+                break;
+
             }
 
 
