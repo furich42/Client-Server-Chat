@@ -25,7 +25,7 @@ void MainWindow::on_ConnectButton_clicked()
     QString ip = ui->IpLine->text();
     socket->connectToHost(ip, 2323);
 
-    ui->ConnectButton->setDisabled(1);
+    //ui->ConnectButton->setDisabled(1);
     ui->SendButton->setDisabled(0);
     QString str = ui->NameLine->text();
     qDebug() << "readed name: " << str;
@@ -41,18 +41,18 @@ void MainWindow::sendToServer(const QString& str, MessageType m_type)
 {
 
     qDebug() <<"socket state is " <<  socket->state();
-            data.clear();
-            QDataStream out(&data, QIODevice::WriteOnly);
-            out.setVersion(QDataStream::Qt_5_1);
-            QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson() ;
+    data.clear();
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_1);
+    QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson();
 
-            out << quint16(0) << sen;
-            out.device()->seek(0);
-            out << quint16(data.size() - sizeof(quint16));
-            socket->write(data);
-            ui->InputLine->clear();
+    out << quint16(0) << sen;
+    out.device()->seek(0);
+    out << quint16(data.size() - sizeof(quint16));
+    socket->write(data);
+    ui->InputLine->clear();
 
-            qDebug() << "sended: " << sen;
+    qDebug() << "sended: " << sen;
 
 
 
@@ -82,11 +82,20 @@ void MainWindow::slotReadyRead()
             QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
             QJsonObject json = doc.object();
 
-            QString mes = json["text"].toString();
-            qDebug() << "incoming mes: " << mes;
+
+            if(json["type"] == MessageType::message) {
+                QString mes = json["text"].toString();
+                qDebug() << "incoming mes: " << mes;
+                ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + json["user"].toString() + ": " + mes );
+            }
+
+            if(json["type"] == MessageType::diagnostic) {
+                QString mes = json["user"].toString();
+                qDebug() << "incoming mes: " << mes;
+                ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + mes + " has connected" );
+            }
 
 
-            ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + json["user"].toString() + ": " + mes );
         }
 
     } else {
@@ -103,7 +112,6 @@ void MainWindow::on_SendButton_clicked()
 
 void MainWindow::on_InputLine_returnPressed()
 {
-
     sendToServer(ui->InputLine->text(), MessageType::message);
 }
 

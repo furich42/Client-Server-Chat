@@ -47,6 +47,7 @@ private:
     QTcpSocket *socket;
 
     QByteArray data;
+
     void sendToServer(const QString& str, MessageType m_type);
 
     quint16 nextBlockSize;
