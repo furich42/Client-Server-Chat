@@ -40,20 +40,10 @@ void MainWindow::on_ConnectButton_clicked()
 void MainWindow::sendToServer(const QString& str, MessageType m_type)
 {
 
-//    QJsonObject json;
-
-
-//    json["type"] = "message";
-//    json["receavers"] = "all";
-//    json["user"] = ui->NameLine->text();
-
     qDebug() <<"socket state is " <<  socket->state();
             data.clear();
             QDataStream out(&data, QIODevice::WriteOnly);
             out.setVersion(QDataStream::Qt_5_1);
-            //json["message"] = str;
-
-
             QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson() ;
 
             out << quint16(0) << sen;
@@ -73,9 +63,6 @@ void MainWindow::slotReadyRead()
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_5_1);
     if(in.status() == QDataStream::Ok) {
-//        QString str;
-//        in >> str;
-//        ui->OutputBrowser->append(str);
         while(true) {
             if(nextBlockSize == 0) {
                 if(socket->bytesAvailable() < 2) {
@@ -95,11 +82,11 @@ void MainWindow::slotReadyRead()
             QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
             QJsonObject json = doc.object();
 
-            QString mes = json["message"].toString();
+            QString mes = json["text"].toString();
             qDebug() << "incoming mes: " << mes;
 
 
-            ui->OutputBrowser->append(QTime::currentTime().toString() + " | " + json["user"].toString() + ": " + mes );
+            ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + json["user"].toString() + ": " + mes );
         }
 
     } else {
@@ -125,7 +112,7 @@ QJsonObject MainWindow::formJson(MessageType m_type, const QString &message, con
 
     QJsonObject json;
 
-    json["message"] = message;
+    json["text"] = message;
     json["user"] = user;
     json["type"] = m_type;
     json["receavers"] = receaver;
