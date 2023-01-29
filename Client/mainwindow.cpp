@@ -31,7 +31,8 @@ void MainWindow::on_ConnectButton_clicked()
     socket->connectToHost(ip, 2323);
 
     user_name = ui->NameLine->text();
-
+    ui->statusBar->clearMessage();
+    ui->statusBar->showMessage("connected to server");
     //ui->ConnectButton->setDisabled(1);
     ui->SendButton->setDisabled(0);
     qDebug() << "readed name: " << user_name;
@@ -61,15 +62,6 @@ void MainWindow::sendToServer(const QString& str)
 
         qDebug() << "sended: " << str;
     }
-
-    if(!socket->isValid()) {
-        qDebug() << "ERROR connection lost";
-    }
-
-
-
-
-
 }
 
 void MainWindow::slotReadyRead()
@@ -164,13 +156,14 @@ QJsonObject MainWindow::formJson(MessageType m_type, const QString &message, con
 void MainWindow::closeEvent(QCloseEvent *)
 {
     sendToServer(QJsonDocument(formJson(MessageType::disconnection,"" , "all", user_name)).toJson());
-
 }
 
 
 void MainWindow::handleDisc() {
+
+    ui->statusBar->showMessage("connection lost, try reconnect");
     qDebug() << "CONNECTION LOST";
-    ui->OutputBrowser->append(QTime::currentTime().toString() + " - LOST CONNECTION TO THE SERVER!" );
+    //ui->OutputBrowser->append(QTime::currentTime().toString() + " - LOST CONNECTION TO THE SERVER!" );
     ui->SendButton->setDisabled(1);
     socket->disconnect();
     socket->disconnectFromHost();
