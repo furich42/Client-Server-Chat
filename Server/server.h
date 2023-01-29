@@ -36,12 +36,14 @@ private:
     QSet<QTcpSocket*> sockets;
     QMap<qintptr, QString> sockets_to_names;
     QByteArray data;
-    void sendToClient(QString str);
+    void sendToClients(QString str);
     qint16 nextBlockSize;
+    QJsonObject formJson(MessageType m_type, const QString &message, const QString &receaver, const QString &user);
 
 public slots:
     void incomingConnection(qintptr socketDescriptor);
     void slotReadyRead();
+    void handleDisc();
 
 };
 
