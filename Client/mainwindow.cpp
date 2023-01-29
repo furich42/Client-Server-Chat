@@ -6,11 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    socket  = new QTcpSocket(this);
-    connect(socket, &QTcpSocket::readyRead, this, &MainWindow::slotReadyRead);
-    connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
-    nextBlockSize = 0;
     ui->SendButton->setDisabled(1);
+
 }
 
 MainWindow::~MainWindow()
@@ -22,6 +19,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_ConnectButton_clicked()
 {
+
+
+    socket  = new QTcpSocket(this);
+    connect(socket, &QTcpSocket::readyRead, this, &MainWindow::slotReadyRead);
+    connect(socket, &QTcpSocket::disconnected, this, &MainWindow::handleDisc);
+
+    nextBlockSize = 0;
 
     QString ip = ui->IpLine->text();
     socket->connectToHost(ip, 2323);
@@ -42,19 +46,27 @@ void MainWindow::on_ConnectButton_clicked()
 void MainWindow::sendToServer(const QString& str)
 {
 
-    qDebug() <<"socket state is " <<  socket->state();
-    data.clear();
-    QDataStream out(&data, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_1);
-    //QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson();
+    if(socket->isValid()) {
+        qDebug() <<"socket state is " <<  socket->state();
+        data.clear();
+        QDataStream out(&data, QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_1);
+        //QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson();
 
-    out << quint16(0) << str;
-    out.device()->seek(0);
-    out << quint16(data.size() - sizeof(quint16));
-    socket->write(data);
+        out << quint16(0) << str;
+        out.device()->seek(0);
+        out << quint16(data.size() - sizeof(quint16));
+        socket->write(data);
 
 
-    qDebug() << "sended: " << str;
+        qDebug() << "sended: " << str;
+    }
+
+    if(!socket->isValid()) {
+        qDebug() << "ERROR connection lost";
+    }
+
+
 
 
 
@@ -127,8 +139,11 @@ void MainWindow::on_SendButton_clicked()
 
 void MainWindow::on_InputLine_returnPressed()
 {
-    sendToServer(QJsonDocument(formJson(MessageType::message, ui->InputLine->text(), "all", ui->NameLine->text())).toJson());
-    ui->InputLine->clear();
+    if(ui->SendButton->isEnabled()) {
+        sendToServer(QJsonDocument(formJson(MessageType::message, ui->InputLine->text(), "all", ui->NameLine->text())).toJson());
+        ui->InputLine->clear();
+    }
+
 }
 
 
@@ -152,3 +167,12 @@ void MainWindow::closeEvent(QCloseEvent *)
 
 }
 
+
+void MainWindow::handleDisc() {
+    qDebug() << "CONNECTION LOST";
+    ui->OutputBrowser->append(QTime::currentTime().toString() + " - LOST CONNECTION TO THE SERVER!" );
+    ui->SendButton->setDisabled(1);
+    socket->disconnect();
+    socket->disconnectFromHost();
+    socket->deleteLater();
+}
