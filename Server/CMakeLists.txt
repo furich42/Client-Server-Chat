@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(Server LANGUAGES CXX)
+project(chat-server LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -17,9 +17,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 
 
 
-add_executable(Server
+add_executable(chat-server
   main.cpp
   server.cpp
   server.h
 )
-target_link_libraries(Server Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network)
+target_link_libraries(chat-server Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network)
