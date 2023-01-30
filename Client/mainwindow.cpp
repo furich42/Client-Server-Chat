@@ -7,12 +7,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->SendButton->setDisabled(1);
+    socket = nullptr;
 
 }
 
 MainWindow::~MainWindow()
 {
-    handleDisc();
+    //handleDisc();
     delete ui;
 
 }
@@ -143,19 +144,26 @@ QJsonObject MainWindow::formJson(MessageType m_type, const QString &message, con
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    sendToServer(QJsonDocument(formJson(MessageType::disconnection,"" , "all", user_name)).toJson());
+    if(ui->SendButton->isEnabled()) {
+        sendToServer(QJsonDocument(formJson(MessageType::disconnection,"" , "all", user_name)).toJson());
+    }
+    handleDisc();
 }
 
 
 void MainWindow::handleDisc() {
 
-    ui->statusBar->showMessage("connection lost, try reconnect");
-    qDebug() << "CONNECTION LOST";
-    ui->SendButton->setDisabled(1);
-    ui->ConnectButton->setDisabled(0);
-    socket->disconnect();
-    socket->disconnectFromHost();
-    socket->deleteLater();
+    if(socket != nullptr) {
+        ui->statusBar->showMessage("connection lost, try reconnect");
+        qDebug() << "CONNECTION LOST";
+        ui->SendButton->setDisabled(1);
+        ui->ConnectButton->setDisabled(0);
+        socket->disconnect();
+        socket->disconnectFromHost();
+        socket->deleteLater();
+    }
+
+
 }
 
 void MainWindow::handleConn() {
