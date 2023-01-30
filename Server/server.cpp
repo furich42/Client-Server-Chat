@@ -147,13 +147,13 @@ QJsonObject Server::formJson(MessageType m_type, const QString &message, const Q
 
 void Server::handleDisc() {
     QString name = sockets_to_names[socket->socketDescriptor()];
-
+    sockets_to_names.erase(socket->socketDescriptor());
     sockets.erase(sockets.find(socket));
     qDebug() << "SOCKET DISC";
     sendToClients(QJsonDocument(formJson(MessageType::disconnection, "", "all", name)).toJson());
     //sockets_to_names.remove(socket->socketDescriptor());
 
-    sockets_to_names.erase(socket->socketDescriptor());
+
     socket->disconnect();
     socket->disconnectFromHost();
     socket->deleteLater();
