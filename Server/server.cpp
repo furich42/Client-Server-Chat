@@ -56,10 +56,11 @@ void Server::slotReadyRead() {
             QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
             QJsonObject json = doc.object();
 
+            qDebug() << "bef stn.size() = " << sockets_to_names.size();
             if(json["type"] == MessageType::connection) {
                 qDebug() << "mt::diagnostic";
 
-                if(!sockets_to_names.contains(socket->socketDescriptor()) ) {
+                if(sockets_to_names.count(socket->socketDescriptor()) == 0 ) {
                     sockets_to_names[socket->socketDescriptor()] = json["user"].toString();
                     qDebug() << "send name to clients";
                     sendToClients(str);
@@ -150,12 +151,18 @@ void Server::handleDisc() {
     sockets.erase(sockets.find(socket));
     qDebug() << "SOCKET DISC";
     sendToClients(QJsonDocument(formJson(MessageType::disconnection, "", "all", name)).toJson());
-    sockets_to_names.remove(socket->socketDescriptor());
+    //sockets_to_names.remove(socket->socketDescriptor());
+
+    sockets_to_names.erase(socket->socketDescriptor());
     socket->disconnect();
     socket->disconnectFromHost();
     socket->deleteLater();
+    qDebug() << name << " client deleted";
 }
 
+
+/// TODO - bug with map<ptr, QString>;
+///         handleDisc() - didnt delete values from sockets_to_names;
 
 
 

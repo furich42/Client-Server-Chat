@@ -34,7 +34,8 @@ private:
     };
 
     QSet<QTcpSocket*> sockets;
-    QMap<qintptr, QString> sockets_to_names;
+    //QMap<qintptr, QString> sockets_to_names;
+    std::map<qintptr, QString> sockets_to_names;
     QByteArray data;
     void sendToClients(QString str);
     qint16 nextBlockSize;
