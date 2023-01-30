@@ -8,14 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->SendButton->setDisabled(1);
     socket = nullptr;
-
 }
 
 MainWindow::~MainWindow()
 {
-    //handleDisc();
     delete ui;
-
 }
 
 
@@ -99,10 +96,6 @@ void MainWindow::slotReadyRead()
             if(json["type"] == MessageType::diagnostic) {
                 qDebug() << "DIAGNOSTIC";
             }
-
-
-
-
         }
 
     } else {
@@ -124,7 +117,6 @@ void MainWindow::on_InputLine_returnPressed()
         sendToServer(QJsonDocument(formJson(MessageType::message, ui->InputLine->text(), "all", ui->NameLine->text())).toJson());
         ui->InputLine->clear();
     }
-
 }
 
 
@@ -162,8 +154,6 @@ void MainWindow::handleDisc() {
         socket->disconnectFromHost();
         socket->deleteLater();
     }
-
-
 }
 
 void MainWindow::handleConn() {
