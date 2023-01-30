@@ -12,8 +12,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-
+    handleDisc();
     delete ui;
+
 }
 
 

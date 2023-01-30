@@ -9,5 +9,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    return a.exec();
+    //a.connect(&a, &QApplication::aboutToQuit, &a, &QApplication::quit);
+    a.exec();
+    //return a.exec();
+    a.exit(0);
+    return 0;
 }
