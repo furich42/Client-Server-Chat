@@ -10,8 +10,9 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     //a.connect(&a, &QApplication::aboutToQuit, &a, &QApplication::quit);
-    a.exec();
+
     //return a.exec();
-    a.exit(0);
+    a.exit(a.exec());
+
     return 0;
 }

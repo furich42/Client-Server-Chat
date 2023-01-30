@@ -29,15 +29,8 @@ void MainWindow::on_ConnectButton_clicked()
 
     QString ip = ui->IpLine->text();
     socket->connectToHost(ip, 2323);
-
-//    user_name = ui->NameLine->text();
     ui->statusBar->clearMessage();
     ui->statusBar->showMessage("connecting...");
-//    //ui->ConnectButton->setDisabled(1);
-//    ui->SendButton->setDisabled(0);
-//    qDebug() << "readed name: " << user_name;
-
-//    sendToServer(QJsonDocument(formJson(MessageType::connection, "", "all", ui->NameLine->text())).toJson());
 
 }
 
@@ -49,8 +42,6 @@ void MainWindow::sendToServer(const QString& str)
         data.clear();
         QDataStream out(&data, QIODevice::WriteOnly);
         out.setVersion(QDataStream::Qt_5_1);
-        //QString sen = QJsonDocument(formJson(m_type, str, "all", ui->NameLine->text())).toJson();
-
         out << quint16(0) << str;
         out.device()->seek(0);
         out << quint16(data.size() - sizeof(quint16));
@@ -160,7 +151,6 @@ void MainWindow::handleDisc() {
 
     ui->statusBar->showMessage("connection lost, try reconnect");
     qDebug() << "CONNECTION LOST";
-    //ui->OutputBrowser->append(QTime::currentTime().toString() + " - LOST CONNECTION TO THE SERVER!" );
     ui->SendButton->setDisabled(1);
     ui->ConnectButton->setDisabled(0);
     socket->disconnect();
