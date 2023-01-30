@@ -161,6 +161,7 @@ void MainWindow::handleDisc() {
     qDebug() << "CONNECTION LOST";
     //ui->OutputBrowser->append(QTime::currentTime().toString() + " - LOST CONNECTION TO THE SERVER!" );
     ui->SendButton->setDisabled(1);
+    ui->ConnectButton->setDisabled(0);
     socket->disconnect();
     socket->disconnectFromHost();
     socket->deleteLater();
@@ -170,7 +171,7 @@ void MainWindow::handleConn() {
     user_name = ui->NameLine->text();
     ui->statusBar->clearMessage();
     ui->statusBar->showMessage("connected to server");
-    //ui->ConnectButton->setDisabled(1);
+    ui->ConnectButton->setDisabled(1);
     ui->SendButton->setDisabled(0);
     qDebug() << "readed name: " << user_name;
 
