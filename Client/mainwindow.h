@@ -67,6 +67,6 @@ private:
 public slots:
     void slotReadyRead();
     void handleDisc();
-
+    void handleConn();
 };
 #endif // MAINWINDOW_H

@@ -20,27 +20,23 @@ MainWindow::~MainWindow()
 void MainWindow::on_ConnectButton_clicked()
 {
 
-
     socket  = new QTcpSocket(this);
     connect(socket, &QTcpSocket::readyRead, this, &MainWindow::slotReadyRead);
     connect(socket, &QTcpSocket::disconnected, this, &MainWindow::handleDisc);
-
+    connect(socket, &QAbstractSocket::connected, this, &MainWindow::handleConn);
     nextBlockSize = 0;
 
     QString ip = ui->IpLine->text();
     socket->connectToHost(ip, 2323);
 
-    user_name = ui->NameLine->text();
+//    user_name = ui->NameLine->text();
     ui->statusBar->clearMessage();
-    ui->statusBar->showMessage("connected to server");
-    //ui->ConnectButton->setDisabled(1);
-    ui->SendButton->setDisabled(0);
-    qDebug() << "readed name: " << user_name;
+    ui->statusBar->showMessage("connecting...");
+//    //ui->ConnectButton->setDisabled(1);
+//    ui->SendButton->setDisabled(0);
+//    qDebug() << "readed name: " << user_name;
 
-    sendToServer(QJsonDocument(formJson(MessageType::connection, "", "all", ui->NameLine->text())).toJson());
-
-
-
+//    sendToServer(QJsonDocument(formJson(MessageType::connection, "", "all", ui->NameLine->text())).toJson());
 
 }
 
@@ -168,4 +164,15 @@ void MainWindow::handleDisc() {
     socket->disconnect();
     socket->disconnectFromHost();
     socket->deleteLater();
+}
+
+void MainWindow::handleConn() {
+    user_name = ui->NameLine->text();
+    ui->statusBar->clearMessage();
+    ui->statusBar->showMessage("connected to server");
+    //ui->ConnectButton->setDisabled(1);
+    ui->SendButton->setDisabled(0);
+    qDebug() << "readed name: " << user_name;
+
+    sendToServer(QJsonDocument(formJson(MessageType::connection, "", "all", ui->NameLine->text())).toJson());
 }
