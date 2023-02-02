@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Chat</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background: &quot;gray&quot; </string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
