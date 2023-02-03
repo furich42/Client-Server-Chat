@@ -60,18 +60,18 @@ void Server::slotReadyRead() {
             if(json["type"] == MessageType::connection) {
                 qDebug() << "mt::diagnostic";
 
-                if(sockets_to_names.count(socket->socketDescriptor()) == 0 ) {
-                    sockets_to_names[socket->socketDescriptor()] = json["user"].toString();
+                if(sockets_to_names.count(socket) == 0 ) {
+                    sockets_to_names[socket] = json["user"].toString();
                     qDebug() << "send name to clients";
                     sendToClients(str);
                 } else {
-                    sockets_to_names[socket->socketDescriptor()] = json["user"].toString();
+                    sockets_to_names[socket] = json["user"].toString();
                     qDebug() << "dont send name to clients";
                 }
 
 
                 qDebug() << "stn.size() = " << sockets_to_names.size();
-                qDebug() << "user " << socket->socketDescriptor() << " now named as " << sockets_to_names[socket->socketDescriptor()];
+                qDebug() << "user " << socket->socketDescriptor() << " now named as " << sockets_to_names[socket];
                 break;
             }
 
@@ -86,7 +86,10 @@ void Server::slotReadyRead() {
 //                socket->disconnect();
 //                socket->disconnectFromHost();
 //                socket->deleteLater();
+                p_name = json["user"].toString();
+                qDebug() << "user to disconnect - " << p_name;
                 handleDisc();
+                p_name = "";
                 qDebug() << sockets.size() << " - now sockets.size() ";
                 //sendToClients(str);
                 break;
@@ -146,23 +149,27 @@ QJsonObject Server::formJson(MessageType m_type, const QString &message, const Q
 
 
 void Server::handleDisc() {
-    QString name = sockets_to_names[socket->socketDescriptor()];
-    sockets_to_names.erase(socket->socketDescriptor());
-    sockets.erase(sockets.find(socket));
+   // QString name = sockets_to_names[socket->socketDescriptor()];
+    qDebug() << socket;
+    qDebug() << socket->socketDescriptor();
     qDebug() << "SOCKET DISC";
-    sendToClients(QJsonDocument(formJson(MessageType::disconnection, "", "all", name)).toJson());
+    qDebug() << sockets_to_names[socket];
+    sendToClients(QJsonDocument(formJson(MessageType::disconnection, "", "all", sockets_to_names[socket])).toJson());
     //sockets_to_names.remove(socket->socketDescriptor());
-
+    sockets_to_names.erase(socket);
+    sockets.erase(sockets.find(socket));
 
     socket->disconnect();
     socket->disconnectFromHost();
     socket->deleteLater();
-    qDebug() << name << " client deleted";
+    qDebug() << "??? client deleted";
 }
 
 
 /// TODO - bug with map<ptr, QString>;
 ///         handleDisc() - didnt delete values from sockets_to_names;
+///
+/// no name in disck because handleDisc called from connection? and there is no socket or message
 
 
 
