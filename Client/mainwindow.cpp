@@ -28,6 +28,7 @@ void MainWindow::on_ConnectButton_clicked()
     QString ip = ui->IpLine->text();
     socket->connectToHost(ip, 2323);
     ui->statusBar->clearMessage();
+
     ui->statusBar->showMessage("connecting...");
 
 }
@@ -78,18 +79,21 @@ void MainWindow::slotReadyRead()
             if(json["type"] == MessageType::message) {
                 QString mes = json["text"].toString();
                 qDebug() << "incoming message: " << mes;
+                ui->OutputBrowser->setTextColor(QColor(QColor(0,0,0)));
                 ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + json["user"].toString() + ": " + mes );
             }
 
             if(json["type"] == MessageType::connection) {
                 QString mes = json["user"].toString();
                 qDebug() << "connection: " << mes;
+                ui->OutputBrowser->setTextColor(QColor(QColor(0,255,0)));
                 ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + mes + " has connected" );
             }
 
             if(json["type"] == MessageType::disconnection) {
                 QString mes = json["user"].toString();
                 qDebug() << "disconnection: " << mes;
+                ui->OutputBrowser->setTextColor(QColor(QColor(255,0,0)));
                 ui->OutputBrowser->append(QTime::currentTime().toString() + " - " + mes + " has disconnected" );
             }
 
